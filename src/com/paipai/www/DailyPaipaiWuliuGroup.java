@@ -43,9 +43,10 @@ public class DailyPaipaiWuliuGroup {
 			// TODO Auto-generated method stub
 			String[] columns = value.toString().split("\t");
 			if (columns[89] != null && !"".equals(columns[89])) {
+				//System.out.println(columns[89] + ",0," + columns[2]);
 				context.write(new Text(columns[89] + ",0," + columns[2]), new IntWritable(1));
-				context.write(new Text(columns[89] + ",1," + columns[13]), new IntWritable(1));
-				context.write(new Text(columns[89] + ",2," + columns[7]), new IntWritable(1));
+				context.write(new Text(columns[89] + ",1," + columns[14]), new IntWritable(1));
+				context.write(new Text(columns[89] + ",2," + columns[11]), new IntWritable(1));
 			}
 		}
 
@@ -70,9 +71,9 @@ public class DailyPaipaiWuliuGroup {
 			for (IntWritable value : values) {
 				if ("0".equals(tag[1])) {
 					count0++;
-				}else if ("1".equals(tag[2])) {
+				}else if ("1".equals(tag[1])) {
 					count1++;
-				}else if ("2".equals(tag[2])) {
+				}else if ("2".equals(tag[1])) {
 					count2++;
 				}
 			}
@@ -92,6 +93,7 @@ public class DailyPaipaiWuliuGroup {
 			for (byte b : fwuliu_code.getBytes()) {
 				k += b & 0xff;
 			}
+			System.out.println("k=="+k);
 			return k % numPartitions;
 		}
 
@@ -112,7 +114,6 @@ public class DailyPaipaiWuliuGroup {
 
 		job.setMapperClass(MyMapper.class);
 		job.setPartitionerClass(MyPartitioner.class);
-		//job.setCombinerClass(MyReducer.class);
 		job.setReducerClass(MyReducer.class);
 		// TODO: specify output types
 		job.setMapOutputKeyClass(Text.class);
@@ -120,20 +121,20 @@ public class DailyPaipaiWuliuGroup {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 
-		job.setInputFormatClass(LzoTextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
-		TextOutputFormat.setCompressOutput(job, true);
-		TextOutputFormat.setOutputCompressorClass(job, LzopCodec.class);
+		//job.setInputFormatClass(LzoTextInputFormat.class);
+		//job.setOutputFormatClass(TextOutputFormat.class);
+		//TextOutputFormat.setCompressOutput(job, true);
+		//TextOutputFormat.setOutputCompressorClass(job, LzopCodec.class);
 
 		// TODO: specify input and output DIRECTORIES (not files)
-		String pathFix = "/user/mart_paipai/";
+		String pathFix = "hdfs://master.hadoop:9000/user/hive/warehouse/app.db/";
 
 		String dateStr = sdf.format(cal.getTime());
 		FileInputFormat.addInputPath(job,
-				new Path(pathFix + "gdm.db/gdm_ecc_daily_raw_paipai_simple_trade_jd_mr/dt=" + dateStr));
+				new Path(pathFix + "gdm_ecc_daily_raw_paipai_simple_trade_jd_mr/dt=" + dateStr));
 
 		FileOutputFormat.setOutputPath(job,
-				new Path(pathFix + "app.db/app_daily_paipai_wuliu_group/dt=" + dealDateStr));
+				new Path(pathFix + "app_daily_paipai_wuliu_group/dt=" + dealDateStr));
 
 		if (!job.waitForCompletion(true))
 			return;
