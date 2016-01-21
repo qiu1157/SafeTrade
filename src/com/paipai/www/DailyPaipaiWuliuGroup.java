@@ -68,7 +68,6 @@ public class DailyPaipaiWuliuGroup {
 			int count2 = 0;
 			String[] tag = key.toString().split(",");
 
-			for (IntWritable value : values) {
 				if ("0".equals(tag[1])) {
 					count0++;
 				}else if ("1".equals(tag[1])) {
@@ -76,7 +75,7 @@ public class DailyPaipaiWuliuGroup {
 				}else if ("2".equals(tag[1])) {
 					count2++;
 				}
-			}
+
 			String tmp = tag[0] + "\t" + count0 + "\t" + count1 + "\t" + count2;
 			//context.getCounter("USEGROUPREDUCER", "tmp==" + tmp).increment(1);
 			Text t = new Text(tmp);
