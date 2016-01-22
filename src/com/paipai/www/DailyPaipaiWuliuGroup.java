@@ -98,50 +98,12 @@ public class DailyPaipaiWuliuGroup {
 
 	};
 
-	public void run(String[] args) throws IOException, ClassNotFoundException, InterruptedException, ParseException {
+/*	public void run(String[] args) throws IOException, ClassNotFoundException, InterruptedException, ParseException {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 
-		Job job = Job.getInstance(conf, "DailyPaipaiWuliuGroup");
-		dealDateStr = conf.get("dealDate");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date dealDate = sdf.parse(dealDateStr);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(dealDate);
-
-		job.setJarByClass(com.paipai.www.DailyPaipaiWuliuGroup.class);
-
-		job.setMapperClass(MyMapper.class);
-		job.setPartitionerClass(MyPartitioner.class);
-		job.setReducerClass(MyReducer.class);
-		// TODO: specify output types
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(IntWritable.class);
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
-
-		//job.setInputFormatClass(LzoTextInputFormat.class);
-		//job.setOutputFormatClass(TextOutputFormat.class);
-		//TextOutputFormat.setCompressOutput(job, true);
-		//TextOutputFormat.setOutputCompressorClass(job, LzopCodec.class);
-
-		// TODO: specify input and output DIRECTORIES (not files)
-		String pathFix = "hdfs://master.hadoop:9000/user/hive/warehouse/app.db/";
-
-		String dateStr = sdf.format(cal.getTime());
-		FileInputFormat.addInputPath(job,
-				new Path(pathFix + "gdm_ecc_daily_raw_paipai_simple_trade_jd_mr/dt=" + dateStr));
-
-		FileOutputFormat.setOutputPath(job,
-				new Path(pathFix + "app_daily_paipai_wuliu_group/dt=" + dealDateStr));
-
-		if (!job.waitForCompletion(true))
+	
+		if (!job1.waitForCompletion(true))
 			return;
-	}
-
-	public static void main(String[] args) throws Exception {
-		DailyPaipaiWuliuGroup dpwg = new DailyPaipaiWuliuGroup();
-		dpwg.run(args);
-	}
-
+	}*/
 }
